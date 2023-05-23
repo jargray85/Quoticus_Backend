@@ -1,15 +1,20 @@
 from peewee import *
 from flask_login import UserMixin
 from flask_bcrypt import generate_password_hash
+import datetime
 
 # connecting to my psql database
 DATABASE = PostgresqlDatabase('quoticus')
 
 # User model
-class User(UserMixin):
+class User(Model, UserMixin):
     email = CharField(unique=True, max_length=120)
     password = CharField(max_length=255)
     favorites = TextField(default="[]")
+
+    class Meta:
+        database = DATABASE
+       
 
     def __init__(self, email, password):
         super().__init__()
@@ -29,7 +34,7 @@ class Category(Model):
 
     class Meta:
         database = DATABASE
-        table_name = 'categories'
+        
 
 # Author model
 class Author(Model):
@@ -39,7 +44,7 @@ class Author(Model):
 
     class Meta:
         database = DATABASE
-        table_name = 'authors'
+        
 
 
 def initialize():
