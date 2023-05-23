@@ -1,30 +1,49 @@
+from peewee import *
 from flask_login import UserMixin
 from flask_bcrypt import generate_password_hash
-from app import db
 
-# Models
+# connecting to my psql database
+DATABASE = PostgresqlDatabase('quoticus')
 
-# User
-class User(UserMixin, db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    email = db.Column(db.String(120), unique=True, nullable=False)
-    password = db.Column(db.String(255), nullable=False)
-    favorites = db.relationship('Author', secondary='favorites', backref='users')
+# User model
+class User(UserMixin):
+    email = CharField(unique=True, max_length=120)
+    password = CharField(max_length=255)
+    favorites = TextField(default="[]")
 
     def __init__(self, email, password):
+        super().__init__()
         self.email = email
         self.password = generate_password_hash(password)
+        self.favorites = ""
 
-# Author
-class Author(db.Model):
-    id = db.Column(db.integer, primary_key=True)
-    quote = db.Column(db.Text, nullable=False)
-    source = db.Column(db.String(255))
-    date = db.Column(db.String(50))
-    category = db.relationship('Category', backref='authors')
-    
+    # def add_favorite(self, author_id):
+        # come back to this
 
-# Category
-class Category(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(100), nullable=False)
+    # def remove_favorite(self, author_id):
+        # come back to this
+
+# Category model
+class Category(Model):
+    name = CharField(max_length=100)
+
+    class Meta:
+        database = DATABASE
+        table_name = 'categories'
+
+# Author model
+class Author(Model):
+    quote = TextField()
+    source = CharField(max_length=255)
+    date = TextField()
+
+    class Meta:
+        database = DATABASE
+        table_name = 'authors'
+
+
+def initialize():
+    DATABASE.connect()
+    DATABASE.create_tables([Author, Category, User], safe=True)
+    print("Connected to DB and created tables if they do not already exist")
+    DATABASE.close()
