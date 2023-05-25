@@ -2,6 +2,7 @@ from flask import Flask, jsonify
 from flask_cors import CORS
 import models
 from flask_login import LoginManager
+from resources.authors import authors
 
 DEBUG = True
 PORT = 8000
@@ -17,6 +18,10 @@ login_manager.init_app(app)
 
 
 # Register blueprints with the app
+app.register_blueprint(authors, url_prefix='/api')
+
+
+
 
 
 if __name__ == '__main__':
