@@ -6,6 +6,26 @@ import datetime
 # connecting to my psql database
 DATABASE = PostgresqlDatabase('quoticus')
 
+
+# Author model
+class Author(Model):
+    name = CharField()
+    quote = TextField()
+    source = CharField(max_length=255)
+    date = CharField()
+
+    class Meta:
+        database = DATABASE
+
+
+# Category model
+class Category(Model):
+    name = CharField(max_length=100)
+
+    class Meta:
+        database = DATABASE
+
+
 # User model
 class User(Model, UserMixin):
     email = CharField(unique=True, max_length=120)
@@ -27,28 +47,14 @@ class User(Model, UserMixin):
 
     # def remove_favorite(self, author_id):
         # come back to this
-
-# Category model
-class Category(Model):
-    name = CharField(max_length=100)
-
-    class Meta:
-        database = DATABASE
-        
-
-# Author model
-class Author(Model):
-    quote = TextField()
-    source = CharField(max_length=255)
-    date = TextField()
-
-    class Meta:
-        database = DATABASE
-        
+       
 
 
 def initialize():
     DATABASE.connect()
+    # DATABASE.drop_tables([Author, Category, User])
+    author_count = Author.select().count()
+    print("number of records in Author table:", author_count)
     DATABASE.create_tables([Author, Category, User], safe=True)
     print("Connected to DB and created tables if they do not already exist")
     DATABASE.close()

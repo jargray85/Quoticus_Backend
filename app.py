@@ -18,8 +18,7 @@ login_manager.init_app(app)
 
 
 # Register blueprints with the app
-app.register_blueprint(authors, url_prefix='/api')
-
+app.register_blueprint(authors, url_prefix='/api/v1/authors')
 
 
 

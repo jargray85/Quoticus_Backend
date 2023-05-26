@@ -8,8 +8,13 @@ from playhouse.shortcuts import model_to_dict
 authors = Blueprint('authors', 'authors')
 
 # Route
-@authors.route('/authors', methods=["GET"])
+@authors.route('/', methods=["GET"])
 def get_authors():
-    authors = Author.select()
-    author_dict = [model_to_dict(author)for author in authors]
-    return jsonify({'authors': author_dict})
+    authors_query = Author.select()
+    print(authors_query)
+    author_dict = [model_to_dict(author)for author in authors_query]
+    return jsonify({
+        'data': author_dict,
+        'message': f"Successfully found {len(author_dict)} authors",
+        'status': 200
+        }), 200
