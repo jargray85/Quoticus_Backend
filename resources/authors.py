@@ -1,6 +1,5 @@
 from models import Author
 from flask import Blueprint, jsonify
-
 from playhouse.shortcuts import model_to_dict
 
 
