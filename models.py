@@ -4,7 +4,7 @@ from flask_bcrypt import generate_password_hash
 import datetime
 
 # connecting to my psql database
-DATABASE = PostgresqlDatabase('quoticus')
+DATABASE = PostgresqlDatabase('quoticus', user='jameseaze.com')
 
 
 # Author model
@@ -16,6 +16,7 @@ class Author(Model):
 
     class Meta:
         database = DATABASE
+        table_name = 'authors'
 
 
 # Category model

@@ -5,7 +5,7 @@ from playhouse.shortcuts import model_to_dict
 
 
 # Blueprint
-authors = Blueprint('authors', 'authors')
+authors = Blueprint('authors', __name__)
 
 # Route
 @authors.route('/', methods=["GET"])
