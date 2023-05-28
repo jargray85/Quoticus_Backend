@@ -22,6 +22,7 @@ class Author(Model):
 # Category model
 class Category(Model):
     category_name = CharField(max_length=100)
+    author = ForeignKeyField(Author, backref='categories')
 
     class Meta:
         database = DATABASE
