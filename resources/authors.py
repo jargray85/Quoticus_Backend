@@ -40,3 +40,25 @@ def get_author_quotes(author_name):
             'message': f"Author with name {author_name} does not exist.",
             'status': 404
         }), 404
+    
+
+# Route for specific quote and its corresponding data
+@authors.route('/quotes/<int:quote_id>', methods=["GET"])
+def get_quote(quote_id):
+    try:
+
+        # Fetch quote by id
+        quote = Author.get(Author.id == quote_id)
+
+        # convert quote data into dictionary
+        quote_dict = model_to_dict(quote)
+
+        return jsonify({
+            'quote': quote_dict,
+            'status': 200
+        }), 200
+    except Author.DoesNotExist:
+        return jsonify({
+            'message': f"This Quote does not exist",
+            'status': 404
+        }), 404
