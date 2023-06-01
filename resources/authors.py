@@ -9,9 +9,14 @@ authors = Blueprint('authors', __name__)
 # Route for all authors
 @authors.route('/', methods=["GET"])
 def get_authors():
+    # Get all authors
     authors_query = Author.select()
     print(authors_query)
+
+    # Convert author data to dictionary
     author_dict = [model_to_dict(author)for author in authors_query]
+    
+    # Return JSON data
     return jsonify({
         'data': author_dict,
         'message': f"Successfully found {len(author_dict)} authors",
@@ -57,6 +62,7 @@ def get_quote(quote_id):
             'quote': quote_dict,
             'status': 200
         }), 200
+    
     except Author.DoesNotExist:
         return jsonify({
             'message': f"This Quote does not exist",
