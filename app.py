@@ -16,6 +16,7 @@ app.secret_key = 'VENIVEDIVICI'
 login_manager.init_app(app)
 
 # CORS arguments go here
+CORS(app, origins='http://localhost:3000')
 
 
 # Register blueprints with the app
