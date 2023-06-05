@@ -1,5 +1,5 @@
 from models import Author
-from flask import Blueprint, jsonify
+from flask import Blueprint, jsonify, Flask
 from playhouse.shortcuts import model_to_dict
 
 
@@ -10,7 +10,7 @@ authors = Blueprint('authors', __name__)
 @authors.route('/', methods=["GET"])
 def get_authors():
     # Get all authors
-    authors_query = Author.select()
+    authors_query = Author.select(Author.name).distinct()
     print(authors_query)
 
     # Convert author data to dictionary

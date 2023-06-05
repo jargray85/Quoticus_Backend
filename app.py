@@ -16,8 +16,13 @@ app.secret_key = 'VENIVEDIVICI'
 login_manager.init_app(app)
 
 # CORS arguments go here
-CORS(app, origins='http://localhost:3000')
-
+CORS(app)
+@app.after_request
+def set_cors_headers(response):
+    response.headers['Access-Control-Allow-Origin'] = '*'  # Replace * with your frontend URL for production
+    response.headers['Access-Control-Allow-Methods'] = 'GET, POST, PUT, DELETE, OPTIONS'
+    response.headers['Access-Control-Allow-Headers'] = 'Content-Type, Authorization'
+    return response
 
 # Register blueprints with the app
 app.register_blueprint(authors, url_prefix='/api/v1/authors')
