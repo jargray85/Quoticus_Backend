@@ -10,7 +10,7 @@ categories = Blueprint('categories', __name__)
 #Route (for all categories)
 @categories.route('/', methods=['GET'])
 def get_categories():
-    categories_query = Category.select()
+    categories_query = Category.select(Category.category_name).distinct()
     category_dict = [model_to_dict(category) for category in categories_query]
     return jsonify({
         'data': category_dict,
@@ -20,7 +20,7 @@ def get_categories():
 
 
 # Route for a specific category
-@categories.route('/<category_name>', methods=["GET"])
+@categories.route('/<category_name>/quotes', methods=["GET"])
 def get_category(category_name):
     try:
         # fetch category by category.id
