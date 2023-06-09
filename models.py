@@ -1,6 +1,7 @@
 from peewee import *
 from flask_login import UserMixin
-from flask_bcrypt import generate_password_hash
+from flask_bcrypt import generate_password_hash, check_password_hash
+from playhouse.postgres_ext import ArrayField
 import datetime
 
 # connecting to my psql database
@@ -33,17 +34,29 @@ class Category(Model):
 class User(Model, UserMixin):
     email = CharField(unique=True, max_length=120)
     password = CharField(max_length=255)
-    favorites = TextField(default="[]")
+    favorites = ArrayField(default=[])
 
     class Meta:
         database = DATABASE
+        table_name = 'users'
        
 
-    def __init__(self, email, password):
-        super().__init__()
-        self.email = email
+    # def __init__(self, email, password):
+    #     super().__init__()
+    #     self.email = email
+    #     self.password = generate_password_hash(password)
+    #     self.favorites = ""
+
+    def set_password(self, password):
         self.password = generate_password_hash(password)
-        self.favorites = ""
+
+    def check_password(self, password):
+        return check_password_hash(self.password, password)
+    
+    @staticmethod
+    def get_by_id(user_id):
+        return User.get(User.id == user_id)
+
 
     # def add_favorite(self, author_id):
         # come back to this
