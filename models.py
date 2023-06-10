@@ -1,11 +1,13 @@
 from peewee import *
+import os
 from flask_login import UserMixin
 from flask_bcrypt import generate_password_hash, check_password_hash
 from playhouse.postgres_ext import ArrayField
 import datetime
 
 # connecting to my psql database
-DATABASE = PostgresqlDatabase('quoticus')
+# DATABASE = PostgresqlDatabase('quoticus')
+DATABASE_URL = os.environ.get('DATABASE_URL')
 
 
 # Author model
@@ -16,7 +18,7 @@ class Author(Model):
     date = CharField()
 
     class Meta:
-        database = DATABASE
+        database = DATABASE_URL
         table_name = 'authors'
 
 
@@ -26,7 +28,7 @@ class Category(Model):
     author = ForeignKeyField(Author, backref='categories')
 
     class Meta:
-        database = DATABASE
+        database = DATABASE_URL
         table_name = 'categories'
 
 
@@ -37,7 +39,7 @@ class User(Model, UserMixin):
     favorites = ArrayField(default=[])
 
     class Meta:
-        database = DATABASE
+        database = DATABASE_URL
         table_name = 'users'
        
 
@@ -67,10 +69,10 @@ class User(Model, UserMixin):
 
 
 def initialize():
-    DATABASE.connect()
+    DATABASE_URL.connect()
     # DATABASE.drop_tables([Author, Category, User])
     author_count = Author.select().count()
     print("number of records in Author table:", author_count)
-    DATABASE.create_tables([Author, Category, User], safe=True)
+    DATABASE_URL.create_tables([Author, Category, User], safe=True)
     print("Connected to DB and created tables if they do not already exist")
-    DATABASE.close()
+    DATABASE_URL.close()
