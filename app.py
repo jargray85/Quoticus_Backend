@@ -21,12 +21,13 @@ def load_user(user_id):
     return models.User.get_by_id(user_id)
 
 # CORS arguments go here
-CORS(app)
+CORS(app, origins='http://localhost:3000')
 @app.after_request
 def set_cors_headers(response):
-    response.headers['Access-Control-Allow-Origin'] = '*'  # Replace * with your frontend URL for production
+    response.headers['Access-Control-Allow-Origin'] = 'http://localhost:3000'  # Replace * with your frontend URL for production
     response.headers['Access-Control-Allow-Methods'] = 'GET, POST, PUT, DELETE, OPTIONS'
     response.headers['Access-Control-Allow-Headers'] = 'Content-Type, Authorization'
+    response.headers['Access-Control-Allow-Credentials'] = 'true'
     return response
 
 # Register blueprints with the app

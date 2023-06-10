@@ -1,5 +1,6 @@
 import models
 from flask import Blueprint, jsonify, request
+from flask_cors import cross_origin
 from flask_bcrypt import check_password_hash, generate_password_hash
 from flask_login import login_user, logout_user, current_user, login_required
 from playhouse.shortcuts import model_to_dict
@@ -10,6 +11,7 @@ users = Blueprint('users', __name__)
 
 # User Registration route
 @users.route('/register', methods=['POST'])
+@cross_origin(origin='http://localhost:3000', methods=['POST'], supports_credentials=True)
 def register():
     data = request.get_json()
     email = data.get('email')
@@ -38,8 +40,19 @@ def register():
 
 
 # User login route
-@users.route('/login', methods=['POST'])
+@users.route('/login', methods=['POST', 'OPTIONS'])
+@cross_origin(origin='http://localhost:3000', methods=['POST', 'OPTIONS'], supports_credentials=True)
 def login():
+
+    if request.method == 'OPTIONS':
+        # Handle OPTIONS request
+        response = jsonify()
+        response.headers['Access-Control-Allow-Origin'] = 'http://localhost:3000'
+        response.headers['Access-Control-Allow-Methods'] = 'POST'
+        response.headers['Access-Control-Allow-Headers'] = 'Content-Type, Authorization'
+        response.headers['Access-Control-Allow-Credentials'] = 'true'
+        return response
+
     data = request.get_json()
     email = data.get('email')
     password = data.get('password')
