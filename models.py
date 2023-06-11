@@ -3,13 +3,14 @@ import os
 from flask_login import UserMixin
 from flask_bcrypt import generate_password_hash, check_password_hash
 from playhouse.postgres_ext import ArrayField
+from playhouse.db_url import connect
 import datetime
 
 # connecting to my psql database
 # DATABASE = PostgresqlDatabase('quoticus')
-DATABASE_URL = os.environ.get('HEROKU_POSTGRESQL_CHARCOAL_URL')
+# DATABASE_URL = os.environ.get('HEROKU_POSTGRESQL_CHARCOAL_URL')
 
-database = PostgresqlDatabase(DATABASE_URL, sslmode='require')
+database = connect(os.environ.get('HEROKU_POSTGRESQL_CHARCOAL_URL'), sslmode='require')
 
 
 # Author model
