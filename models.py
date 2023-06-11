@@ -7,7 +7,7 @@ import datetime
 
 # connecting to my psql database
 # DATABASE = PostgresqlDatabase('quoticus')
-DATABASE_URL = os.environ.get('DATABASE_URL')
+DATABASE_URL = os.environ.get('DATABASE_URL').replace('postgres://', 'postgresql://')
 
 database = PostgresqlDatabase(DATABASE_URL, sslmode='require')
 
