@@ -7,7 +7,7 @@ import datetime
 
 # connecting to my psql database
 # DATABASE = PostgresqlDatabase('quoticus')
-DATABASE_URL = os.environ.getenv('HEROKU_POSTGRESQL_CHARCOAL_URL')
+DATABASE_URL = os.environ.get('HEROKU_POSTGRESQL_CHARCOAL_URL')
 
 database = PostgresqlDatabase(DATABASE_URL, sslmode='require')
 
