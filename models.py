@@ -8,9 +8,11 @@ import datetime
 
 # connecting to my psql database
 # DATABASE = PostgresqlDatabase('quoticus')
-# DATABASE_URL = os.environ.get('HEROKU_POSTGRESQL_CHARCOAL_URL')
+DATABASE_URL = os.environ.get('HEROKU_POSTGRESQL_CHARCOAL_URL')
 
-database = connect(os.environ.get('HEROKU_POSTGRESQL_CHARCOAL_URL'), sslmode='require')
+database = connect(DATABASE_URL, sslmode='require')
+
+
 
 
 # Author model
@@ -22,6 +24,7 @@ class Author(Model):
 
     class Meta:
         database = database
+        schema = 'quoticus'
         table_name = 'authors'
 
 
@@ -32,6 +35,7 @@ class Category(Model):
 
     class Meta:
         database = database
+        schema = 'quoticus'
         table_name = 'categories'
 
 
@@ -43,6 +47,7 @@ class User(Model, UserMixin):
 
     class Meta:
         database = database
+        schema = 'quoticus'
         table_name = 'users'
        
 
@@ -74,7 +79,6 @@ class User(Model, UserMixin):
 def initialize():
     database.connect()
     # DATABASE.drop_tables([Author, Category, User])
-    database.set_current_schema('quoticus')
     author_count = Author.select().count()
     print("number of records in Author table:", author_count)
     database.create_tables([Author, Category, User], safe=True)
