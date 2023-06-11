@@ -9,7 +9,7 @@ import datetime
 # DATABASE = PostgresqlDatabase('quoticus')
 DATABASE_URL = os.environ.get('DATABASE_URL')
 
-database = PostgresqlDatabase(DATABASE_URL)
+database = PostgresqlDatabase(DATABASE_URL, sslmode='require')
 
 
 # Author model
