@@ -74,7 +74,7 @@ class User(Model, UserMixin):
 def initialize():
     database.connect()
     # DATABASE.drop_tables([Author, Category, User])
-    database.execute_sql('USE quoticus')
+    database.set_current_schema('quoticus')
     author_count = Author.select().count()
     print("number of records in Author table:", author_count)
     database.create_tables([Author, Category, User], safe=True)
