@@ -7,6 +7,7 @@ from resources.categories import categories
 from resources.users import users
 import psycopg2
 import os
+from urllib.parse import urlparse
 
 DEBUG = True
 PORT = 8000
@@ -23,7 +24,20 @@ def load_user(user_id):
     return models.User.get_by_id(user_id)
 
 database_url = os.environ.get('DATABASE_URL')
-database = psycopg2.connect(database_url)
+result = urlparse(database_url)
+dbname = result.path[1:]
+user = result.username
+password = result.password
+host = result.hostname
+port = result.port
+
+database = psycopg2.connect(
+    database=dbname,
+    user=user,
+    password=password,
+    host=host,
+    port=port
+)
 
 app.config['SQLALCHEMY_DATABASE_URI'] = database
 
