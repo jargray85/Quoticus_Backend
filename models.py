@@ -7,10 +7,10 @@ from playhouse.db_url import connect
 import datetime
 
 # connecting to my psql database
-# DATABASE = PostgresqlDatabase('quoticus')
-DATABASE_URL = os.environ.get('HEROKU_POSTGRESQL_CHARCOAL_URL')
+DATABASE = PostgresqlDatabase('quoticus')
+# DATABASE_URL = os.environ.get('HEROKU_POSTGRESQL_CHARCOAL_URL')
 
-database = connect(DATABASE_URL, sslmode='require')
+# database = connect(DATABASE_URL, sslmode='require')
 
 
 
@@ -23,8 +23,7 @@ class Author(Model):
     date = CharField()
 
     class Meta:
-        database = database
-        schema = 'quoticus'
+        database = DATABASE
         table_name = 'authors'
 
 
@@ -34,8 +33,7 @@ class Category(Model):
     author = ForeignKeyField(Author, backref='categories')
 
     class Meta:
-        database = database
-        schema = 'quoticus'
+        database = DATABASE
         table_name = 'categories'
 
 
@@ -46,8 +44,7 @@ class User(Model, UserMixin):
     favorites = ArrayField(default=[])
 
     class Meta:
-        database = database
-        schema = 'quoticus'
+        database = DATABASE
         table_name = 'users'
        
 
@@ -77,10 +74,10 @@ class User(Model, UserMixin):
 
 
 def initialize():
-    database.connect()
+    DATABASE.connect()
     # DATABASE.drop_tables([Author, Category, User])
     author_count = Author.select().count()
     print("number of records in Author table:", author_count)
-    database.create_tables([Author, Category, User], safe=True)
+    DATABASE.create_tables([Author, Category, User], safe=True)
     print("Connected to DB and created tables if they do not already exist")
-    database.close()
+    DATABASE.close()
