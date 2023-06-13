@@ -1,5 +1,6 @@
 import models
 from flask import Blueprint, jsonify, request
+from flask_cors import cross_origin
 from flask_bcrypt import check_password_hash, generate_password_hash
 from flask_login import login_user, logout_user, current_user, login_required
 from playhouse.shortcuts import model_to_dict
@@ -9,7 +10,8 @@ users = Blueprint('users', __name__)
 
 
 # User Registration route
-@users.route('/register', methods=['POST'])
+@users.route('/register', methods=['POST', 'OPTIONS'])
+@cross_origin(origins='*')
 def register():
     data = request.get_json()
     email = data.get('email')
@@ -39,6 +41,7 @@ def register():
 
 # User login route
 @users.route('/login', methods=['POST', 'OPTIONS'])
+@cross_origin(origins='*')
 def login():
 
     if request.method == 'OPTIONS':
@@ -78,7 +81,8 @@ def login():
 
 
 # User logout route
-@users.route('/logout', methods=['POST'])
+@users.route('/logout', methods=['POST', 'OPTIONS'])
+@cross_origin(origins='*')
 @login_required
 def logout():
 
@@ -90,7 +94,7 @@ def logout():
     }), 200
 
 # User update password route
-@users.route('/password', methods=['PUT'])
+@users.route('/password', methods=['PUT', 'OPTIONS'])
 @login_required
 def update_password():
     # fetch logged in user
@@ -122,7 +126,7 @@ def update_password():
 
 
 # User favorite quotes route
-@users.route('/favorites', methods=['POST'])
+@users.route('/favorites', methods=['POST', 'OPTIONS'])
 @login_required
 def save_favorite():
     data = request.get_json()
@@ -144,7 +148,7 @@ def save_favorite():
 
 
 # user remove quote from favorites
-@users.route('/favorites/<quote_id>', methods=['DELETE'])
+@users.route('/favorites/<quote_id>', methods=['DELETE', 'OPTIONS'])
 @login_required
 def remove_favorite(quote_id):
     # fetch logged in user

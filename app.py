@@ -21,17 +21,19 @@ def load_user(user_id):
     return models.User.get_by_id(user_id)
 
 # CORS arguments go here
-# CORS(app, resources={r'/*': {'origins': ['http://localhost:8000']}}, supports_credentials=True)
+CORS(app, resources={r'/api/v1/*': {'origins': 'https://quoticus.netlify.app'}}, supports_credentials=True)
+# CORS(app)
+# CORS(app, resources={r'/*': {'origins': ['http://localhost:3000', 'https://quoticus.netlify.app']}}, supports_credentials=True)
 # CORS(authors, origins='http://localhost:3000', supports_credentials=True)
 # CORS(categories, origins='http://localhost:3000', supports_credentials=True)
 # CORS(users, origins='http://localhost:3000', supports_credentials=True)
-@app.after_request
-def set_cors_headers(response):
-    response.headers['Access-Control-Allow-Origin'] = 'http://localhost:3000' 
-    response.headers['Access-Control-Allow-Methods'] = 'GET, POST, PUT, DELETE, OPTIONS, HEAD'
-    response.headers['Access-Control-Allow-Headers'] = 'Content-Type, Authorization'
-    response.headers['Access-Control-Allow-Credentials'] = 'true'
-    return response
+# @app.after_request
+# def set_cors_headers(response):
+#     response.headers['Access-Control-Allow-Origin'] = 'http://localhost:3000' 
+#     response.headers['Access-Control-Allow-Methods'] = 'GET, POST, PUT, DELETE, OPTIONS, HEAD'
+#     response.headers['Access-Control-Allow-Headers'] = 'Content-Type, Authorization'
+#     response.headers['Access-Control-Allow-Credentials'] = 'true'
+#     return response
 
 # Register blueprints with the app
 app.register_blueprint(authors, url_prefix='/api/v1/authors')

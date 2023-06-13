@@ -1,6 +1,7 @@
 from models import Category, Author
 from flask import Blueprint, jsonify
 from playhouse.shortcuts import model_to_dict
+from flask_cors import cross_origin
 
 
 # Blueprint
@@ -8,7 +9,8 @@ categories = Blueprint('categories', __name__)
 
 
 #Route (for all categories)
-@categories.route('/', methods=['GET'])
+@categories.route('/', methods=['GET', 'OPTIONS'])
+@cross_origin(origins='*')
 def get_categories():
     categories_query = Category.select(Category.category_name).distinct()
     category_dict = [model_to_dict(category) for category in categories_query]
@@ -20,7 +22,8 @@ def get_categories():
 
 
 # Route for a specific category
-@categories.route('/<category_name>/quotes', methods=["GET"])
+@categories.route('/<category_name>/quotes', methods=["GET", "OPTIONS"])
+@cross_origin(origins='*')
 def get_category(category_name):
     try:
         # fetch category by category.id
