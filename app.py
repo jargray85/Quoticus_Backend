@@ -7,6 +7,7 @@ from resources.categories import categories
 from resources.users import users
 import psycopg2
 import os
+import dj_database_url
 
 DEBUG = True
 PORT = 8000
@@ -23,11 +24,9 @@ def load_user(user_id):
     return models.User.get_by_id(user_id)
 
 database_url = os.environ.get('DATABASE_URL')
+database = dj_database_url.parse(database_url)
 
-database = psycopg2.connect(database_url)
-
-app.config['SQLALCHEMY_DATABASE_URI'] = database
-app.config['SQLALCHEMY_DATABASE_URI'] = database
+app.config['SQLALCHEMY_DATABASE_URI'] = database['url']
 
 
 # CORS arguments go here
