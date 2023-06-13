@@ -24,9 +24,10 @@ def load_user(user_id):
     return models.User.get_by_id(user_id)
 
 database_url = os.environ.get('DATABASE_URL')
-database = dj_database_url.parse(database_url)
+database = dj_database_url.config(default=database_url)
 
-app.config['SQLALCHEMY_DATABASE_URI'] = database['url']
+app.config['SQLALCHEMY_DATABASE_URI'] = database['URL']
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 
 # CORS arguments go here
