@@ -5,6 +5,8 @@ from flask_login import LoginManager
 from resources.authors import authors
 from resources.categories import categories
 from resources.users import users
+from playhouse.db_url import connect
+import os
 
 DEBUG = True
 PORT = 8000
@@ -19,6 +21,10 @@ login_manager.init_app(app)
 @login_manager.user_loader
 def load_user(user_id):
     return models.User.get_by_id(user_id)
+
+database = connect(os.environ.get('DATABASE_URL'))
+
+app.config['SQLALCHEMY_DATABASE_URI'] = database
 
 # CORS arguments go here
 CORS(app, resources={r'/api/v1/*': {'origins': 'https://quoticus.netlify.app'}}, supports_credentials=True)

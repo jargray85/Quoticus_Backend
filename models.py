@@ -7,10 +7,10 @@ from playhouse.db_url import connect
 import datetime
 
 # connecting to my psql database
-DATABASE = PostgresqlDatabase('quoticus')
-# DATABASE_URL = os.environ.get('HEROKU_POSTGRESQL_CHARCOAL_URL')
+# DATABASE = PostgresqlDatabase('quoticus')
+DATABASE_URL = os.environ.get('postgres://uwnmtmywssknbl:fec3650206eaa86d6396301953b1eaf76a858a111d080afadf9108f8bbad2b5a@ec2-3-232-103-50.compute-1.amazonaws.com:5432/d13e2kip80q7rt')
 
-# database = connect(DATABASE_URL, sslmode='require')
+database = connect(DATABASE_URL, sslmode='require')
 
 
 
@@ -23,7 +23,7 @@ class Author(Model):
     date = CharField()
 
     class Meta:
-        database = DATABASE
+        database = database
         table_name = 'authors'
 
 
@@ -33,7 +33,7 @@ class Category(Model):
     author = ForeignKeyField(Author, backref='categories')
 
     class Meta:
-        database = DATABASE
+        database = database
         table_name = 'categories'
 
 
@@ -44,7 +44,7 @@ class User(Model, UserMixin):
     favorites = ArrayField(default=[])
 
     class Meta:
-        database = DATABASE
+        database = database
         table_name = 'users'
        
 
@@ -74,10 +74,10 @@ class User(Model, UserMixin):
 
 
 def initialize():
-    DATABASE.connect()
+    database.connect()
     # DATABASE.drop_tables([Author, Category, User])
     author_count = Author.select().count()
     print("number of records in Author table:", author_count)
-    DATABASE.create_tables([Author, Category, User], safe=True)
+    database.create_tables([Author, Category, User], safe=True)
     print("Connected to DB and created tables if they do not already exist")
-    DATABASE.close()
+    database.close()
