@@ -4,14 +4,11 @@ from flask_login import UserMixin
 from flask_bcrypt import generate_password_hash, check_password_hash
 from playhouse.postgres_ext import ArrayField
 from playhouse.db_url import connect
+from urllib.parse import urlparse
 import datetime
 
 # connecting to my psql database
-# DATABASE = PostgresqlDatabase('quoticus')
-DATABASE_URL = os.environ.get('postgres://uwnmtmywssknbl:fec3650206eaa86d6396301953b1eaf76a858a111d080afadf9108f8bbad2b5a@ec2-3-232-103-50.compute-1.amazonaws.com:5432/d13e2kip80q7rt')
-
-database = connect(DATABASE_URL, sslmode='require')
-
+DATABASE = PostgresqlDatabase('quoticus')
 
 
 
@@ -23,7 +20,7 @@ class Author(Model):
     date = CharField()
 
     class Meta:
-        database = database
+        database = DATABASE
         table_name = 'authors'
 
 
@@ -33,7 +30,7 @@ class Category(Model):
     author = ForeignKeyField(Author, backref='categories')
 
     class Meta:
-        database = database
+        database = DATABASE
         table_name = 'categories'
 
 
@@ -44,7 +41,7 @@ class User(Model, UserMixin):
     favorites = ArrayField(default=[])
 
     class Meta:
-        database = database
+        database = DATABASE
         table_name = 'users'
        
 
@@ -74,10 +71,10 @@ class User(Model, UserMixin):
 
 
 def initialize():
-    database.connect()
+    DATABASE.connect()
     # DATABASE.drop_tables([Author, Category, User])
     author_count = Author.select().count()
     print("number of records in Author table:", author_count)
-    database.create_tables([Author, Category, User], safe=True)
+    DATABASE.create_tables([Author, Category, User], safe=True)
     print("Connected to DB and created tables if they do not already exist")
-    database.close()
+    DATABASE.close()

@@ -5,9 +5,8 @@ from flask_login import LoginManager
 from resources.authors import authors
 from resources.categories import categories
 from resources.users import users
-import psycopg2
-import os
-import dj_database_url
+
+
 
 DEBUG = True
 PORT = 8000
@@ -15,6 +14,7 @@ PORT = 8000
 login_manager = LoginManager()
 
 app = Flask(__name__)
+
 app.secret_key = 'VENIVEDIVICI'
 
 login_manager.init_app(app)
@@ -22,12 +22,6 @@ login_manager.init_app(app)
 @login_manager.user_loader
 def load_user(user_id):
     return models.User.get_by_id(user_id)
-
-database_url = os.environ.get('DATABASE_URL')
-database = dj_database_url.config(default=database_url)
-
-app.config['SQLALCHEMY_DATABASE_URI'] = database['URL']
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 
 # CORS arguments go here
