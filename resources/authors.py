@@ -9,7 +9,7 @@ authors = Blueprint('authors', __name__)
 
 # Route for all authors
 @authors.route('/', methods=["GET", "OPTIONS"])
-@cross_origin(origins='*')
+@cross_origin(origins='https://quoticus.netlify.app')
 def get_authors():
     # Get all authors
     authors_query = Author.select(Author.name).distinct()
@@ -27,7 +27,7 @@ def get_authors():
 
 # Route for quotes by author
 @authors.route('/<author_name>/quotes', methods=["GET", "OPTIONS"])
-@cross_origin(origins='*')
+@cross_origin(origins='https://quoticus.netlify.app')
 def get_author_quotes(author_name):
     try:
         # Find author by name
@@ -52,7 +52,7 @@ def get_author_quotes(author_name):
 
 # Route for specific quote and its corresponding data
 @authors.route('/quotes/<int:quote_id>', methods=["GET", "OPTIONS"])
-@cross_origin(origins='*')
+@cross_origin(origins='https://quoticus.netlify.app')
 def get_quote(quote_id):
     try:
 
