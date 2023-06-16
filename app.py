@@ -1,6 +1,7 @@
 from flask import Flask, jsonify
 from flask_cors import CORS
 import models
+import os
 from flask_login import LoginManager
 from resources.authors import authors
 from resources.categories import categories
@@ -8,8 +9,8 @@ from resources.users import users
 
 
 
-DEBUG = True
-PORT = 8000
+DEBUG = False
+PORT = int(os.environ.get('PORT', 8000))
 
 login_manager = LoginManager()
 
