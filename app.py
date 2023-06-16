@@ -37,7 +37,7 @@ CORS(app, resources={r'/*': {'origins': '*'}}, supports_credentials=True)
 # CORS(users, origins='http://localhost:3000', supports_credentials=True)
 @app.after_request
 def set_cors_headers(response):
-    response.headers['Access-Control-Allow-Origin'] = 'https://main--quoticus.netlify.app' 
+    response.headers['Access-Control-Allow-Origin'] = '*' 
     response.headers['Access-Control-Allow-Methods'] = 'GET, POST, PUT, DELETE, OPTIONS, HEAD'
     response.headers['Access-Control-Allow-Headers'] = 'Content-Type, Authorization'
     response.headers['Access-Control-Allow-Credentials'] = 'true'
