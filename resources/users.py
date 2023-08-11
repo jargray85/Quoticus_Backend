@@ -11,7 +11,6 @@ users = Blueprint('users', __name__)
 
 # User Registration route
 @users.route('/register', methods=['POST', 'OPTIONS'])
-@cross_origin(origins='*')
 def register():
     data = request.get_json()
     email = data.get('email')
@@ -41,7 +40,6 @@ def register():
 
 # User login route
 @users.route('/login', methods=['POST', 'OPTIONS'])
-@cross_origin(origins='*')
 def login():
 
     if request.method == 'OPTIONS':
@@ -82,7 +80,6 @@ def login():
 
 # User logout route
 @users.route('/logout', methods=['POST', 'OPTIONS'])
-@cross_origin(origins='*')
 @login_required
 def logout():
 
