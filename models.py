@@ -7,20 +7,40 @@ from playhouse.db_url import connect
 from urllib.parse import urlparse
 import datetime
 
+# Local development flag
+IS_LOCAL_DEV = True
+
+# Local PSQL connection
+LOCAL_DB = {
+    'database': 'quoticus',
+    'host': 'localhost',
+    'port': 5432,
+}
 
 # Extract database URL from Heroku env variable
 db_url = os.getenv('DATABASE_URL')
-parsed_url = urlparse(db_url)
 
+# Conditional for local psql when in development
+if IS_LOCAL_DEV:
+    DATABASE = PostgresqlDatabase(
+        LOCAL_DB['database'],
+        host=LOCAL_DB['host'],
+        port=LOCAL_DB['port'],
+    )
 
-# connecting to my psql database
-DATABASE = PostgresqlDatabase(
-    database=parsed_url.path[1:],
-    user=parsed_url.username,
-    password=parsed_url.password,
-    host=parsed_url.hostname,
-    port=parsed_url.port,
-)
+else:
+
+    # Used Heroku psql when in production
+    parsed_url = urlparse(db_url)
+
+    # connecting to my psql database
+    DATABASE = PostgresqlDatabase(
+        database=parsed_url.path[1:],
+        user=parsed_url.username,
+        password=parsed_url.password,
+        host=parsed_url.hostname,
+        port=parsed_url.port,
+    )
 
 
 
