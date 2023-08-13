@@ -25,7 +25,8 @@ def register():
         }), 409
     
     # Create new user
-    user = models.User(email=email, password=password)
+    user = models.User(email=email)
+    user.set_password(password)
     user.save()
 
     # user dictionary
