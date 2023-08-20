@@ -30,7 +30,7 @@ if IS_LOCAL_DEV:
 
 else:
 
-    # Used Heroku psql when in production
+    # Use Heroku psql when in production
     parsed_url = urlparse(db_url)
 
     # connecting to my psql database

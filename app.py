@@ -21,6 +21,7 @@ app = Flask(__name__)
 def home():
     return "Hello, this is the home page!"
 
+# SECRET KEY
 app.secret_key = 'VENIVEDIVICI'
 
 login_manager.init_app(app)
@@ -49,8 +50,8 @@ def handle_options_request():
     if request.method == 'OPTIONS':
         # Handle OPTIONS request
         response = jsonify()
-        response.status_code = 200  # Set the response status to 200
-        response.headers['Access-Control-Allow-Origin'] = 'http://localhost:3000'  # Adjust origin as needed
+        response.status_code = 200 
+        response.headers['Access-Control-Allow-Origin'] = 'http://localhost:3000'
         response.headers['Access-Control-Allow-Methods'] = 'POST'
         response.headers['Access-Control-Allow-Headers'] = 'Content-Type, Authorization'
         response.headers['Access-Control-Allow-Credentials'] = 'true'
