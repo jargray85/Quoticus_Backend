@@ -17,7 +17,7 @@ def register():
     password = data.get('password')
 
     try: 
-        User.create_user(email, password)
+        models.User.create_user(email, password)
         return jsonify({'message': 'Registration successful'}), 201
     except ValueError as e:
         return jsonify({'message': str(e)}), 409
@@ -30,7 +30,7 @@ def login():
     email = data.get('email')
     password = data.get('password')
 
-    user = User.select().where(User.email == email).first()
+    user = models.User.select().where(models.User.email == email).first()
 
     if user and check_password_hash(user.password, password):
         login_user(user)
